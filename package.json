@@ -1,0 +1,24 @@
+{
+  "name": "transmog",
+  "version": "1.0.0",
+  "description": "Simple rule-based object transformer",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src --out-dir lib",
+    "test": "nyc --reporter=lcov --reporter=text mocha",
+    "test:watch": "mocha --watch"
+  },
+  "author": "thrucker",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-core": "^6.13.2",
+    "babel-preset-es2015": "^6.13.2",
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2",
+    "nyc": "^8.1.0"
+  },
+  "dependencies": {
+    "lodash": "^4.15.0"
+  }
+}
