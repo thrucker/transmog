@@ -8,7 +8,7 @@ describe('assert', () => {
         before(() => {
             oldNodeEnv = process.env.NODE_ENV;
             process.env.NODE_ENV = 'production';
-            assert = requireNoCache('../src/assert').default;
+            assert = requireNoCache('../src/assert');
         });
 
         after(() => {
@@ -31,7 +31,7 @@ describe('assert', () => {
         before(() => {
             oldNodeEnv = process.env.NODE_ENV;
             process.env.NODE_ENV = 'development';
-            assert = requireNoCache('../src/assert').default;
+            assert = requireNoCache('../src/assert');
         });
 
         after(() => {
