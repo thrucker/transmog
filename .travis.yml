@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+- node
+deploy:
+  provider: npm
+  email: t.rucker@itsonix.eu
+  api_key:
+    secure: HcYKkAfO7nHZ7YkGV+eRr39YQw6NbQZO73Vys6RblHsvWd1DC4kseLXZ4/BigDmYn8Km1SjTCNImsLzKiRQlaDkgxlJ/10lUXeaybkxW2jbJIhrhWUT2ctLItjarLAsvi+ZGgivvMbo8skUnmfXdqudxwBfJsvgt8kEHw0npwmUxE985XickTZRj2nFU1+emVWjlTJ+9LiXg3UiyRb0CI73RHKcDCWycYqj402i4anQc1Xo2eFXMjC0JPBxh3864FX2H+ztoxqkCaljQ2nHh+/Inu8HtDWqbioQU9Q6ltPUh8E+ZtY/bOcm/oF0Fq0MRECeYcMPwgGHPbu4HFr+cu6YlNH1KRezkrqtgpxmo/ym3BrrDggBcTTJBPE1iM5P/U/4OFJdDAVgNVyFEWQm5c3fo/4ZGyQxsOzXxfExQxARHufViggs2sxB6M4aF6jY8dfBf0rMOvrU/9G7cHflPbJu7paxV3PtpVA83XbnM0PZMNlZXwPJoJSI1s3+ce/zD1pMrVESOCvhT7Dxtxo+/1jvy4B9HIz+fFNjPUn6Y0HAr8dfK5LMVFrzJQquiPRQC9GWmPl3YUZ90gWOeHfpt8xHYQLJUep3Rwy2KExB2R+r6LOlaUjZIN/hP3SAzN6bwuftHLavMGZ7EeS2Pkn7z7+SkyaFs5KQqKcUg8TsKNhg=
+  on:
+    tags: true
+    repo: thrucker/transmog
