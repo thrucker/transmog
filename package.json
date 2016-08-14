@@ -1,6 +1,6 @@
 {
   "name": "transmog",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple rule-based object transformer",
   "main": "lib/index.js",
   "scripts": {
