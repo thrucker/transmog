@@ -16,30 +16,30 @@ import typeOf from './typeOf';
 
 let mapValues = _mapValues.convert({cap: false});
 
-let canonicalizeBoolean = (transformProperty, sourcePath) => {
+let canonicalizeBoolean = (transformProperty, destinationPath) => {
     if (!transformProperty) {
         return null;
     }
 
     return {
         converter: identity,
-        destinationPath: sourcePath
+        sourcePath: destinationPath
     };
 };
 
-let canonicalizeFunction = (converter, sourcePath) => {
-    return {converter, destinationPath: sourcePath};
+let canonicalizeFunction = (converter, destinationPath) => {
+    return {converter, sourcePath: destinationPath};
 }
 
-let canonicalizeString = (destinationPath, sourcePath) => {
-    return {converter: identity, destinationPath};
+let canonicalizeString = (sourcePath, destinationPath) => {
+    return {converter: identity, sourcePath};
 }
 
-let canonicalizeObject = (rule, sourcePath) =>
+let canonicalizeObject = (rule, destinationPath) =>
     defaults(
         {
             converter: identity,
-            destinationPath: sourcePath
+            sourcePath: destinationPath
         },
         rule
     )
@@ -56,15 +56,15 @@ let filterExistingCanonicalizers = pickBy(
 );
 
 let applyCanonicalizers = mapValues(
-    (rule, sourcePath) => invoke(canonicalizers, typeOf(rule), rule, sourcePath)
+    (rule, destinationPath) => invoke(canonicalizers, typeOf(rule), rule, destinationPath)
 );
 
 let omitEmptyRules = omitBy(isNil);
 
 let assertRuleFormat = tap(
-    forEach(({converter, destinationPath}) => {
+    forEach(({converter, sourcePath}) => {
         assert(typeof converter === 'function', 'converter must be a function');
-        assert(typeof destinationPath === 'string', 'destinationPath must be a string');
+        assert(typeof sourcePath === 'string', 'sourcePath must be a string');
     })
 );
 

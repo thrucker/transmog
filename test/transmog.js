@@ -5,15 +5,15 @@ import assert from '../src/assert';
 
 describe('transmog', () => {
     context('object rules', () => {
-        it('should map the property at the given path to the destinationPath', () => {
+        it('should map the property at sourcePath to the destination path given by the key', () => {
             let rules = {
-                a: {
+                'mapped.a': {
                     converter: identity,
-                    destinationPath: 'mapped.a'
+                    sourcePath: 'a'
                 },
-                'b.c': {
+                'C': {
                     converter: identity,
-                    destinationPath: 'C'
+                    sourcePath: 'b.c'
                 }
             };
 
@@ -34,13 +34,13 @@ describe('transmog', () => {
 
         it('should convert the value using the given converter function', () => {
             let rules = {
-                a: {
+                A: {
                     converter: (a) => a + 1,
-                    destinationPath: 'A'
+                    sourcePath: 'a'
                 },
-                b: {
+                'hello.world': {
                     converter: (b) => `Hello, ${b}!`,
-                    destinationPath: 'hello.world'
+                    sourcePath: 'b'
                 }
             };
 
@@ -59,8 +59,8 @@ describe('transmog', () => {
 
         it('should use identity if converter is omitted', () => {
             let rules = {
-                a: {
-                    destinationPath: 'b'
+                b: {
+                    sourcePath: 'a'
                 }
             };
 
@@ -73,7 +73,7 @@ describe('transmog', () => {
             });
         });
 
-        it('should use source path if destinationPath is omitted', () => {
+        it('should use destination path as source path if sourcePath is omitted', () => {
             let rules = {
                 a: {
                     converter: (a) => a + 1
@@ -93,9 +93,9 @@ describe('transmog', () => {
     context('property paths', () => {
         it('should read from deep paths', () => {
             let rules = {
-                'a.b.c': {
+                abc: {
                     converter: identity,
-                    destinationPath: 'abc'
+                    sourcePath: 'a.b.c'
                 }
             };
 
@@ -114,9 +114,9 @@ describe('transmog', () => {
 
         it('should write to deep path', () => {
             let rules = {
-                abc: {
+                'a.b.c': {
                     converter: identity,
-                    destinationPath: 'a.b.c'
+                    sourcePath: 'abc'
                 }
             };
 
@@ -135,13 +135,13 @@ describe('transmog', () => {
 
         it('should ignore non-existing source paths', () => {
             let rules = {
-                a: {
+                A: {
                     converter: identity,
-                    destinationPath: 'A'
+                    sourcePath: 'a'
                 },
-                'b.c': {
+                BC: {
                     converter: identity,
-                    destinationPath: 'BC'
+                    sourcePath: 'b.c'
                 }
             };
 
@@ -212,9 +212,9 @@ describe('transmog', () => {
     });
 
     context('string rules', () => {
-        it('should move the property to the given destination path', () => {
+        it('should move the property from source path given by the value to destination path given by the key', () => {
             let rules = {
-                a: 'b.c'
+                'b.c': 'a'
             };
 
             let obj = {
@@ -234,7 +234,7 @@ describe('transmog', () => {
             let rules = {
                 a: {
                     converter: 3,
-                    destinationPath: 'a'
+                    sourcePath: 'a'
                 }
             };
 
@@ -245,11 +245,11 @@ describe('transmog', () => {
             expect(() => transmog(rules, obj)).to.throw('AssertionError');
         });
 
-        it('should throw AssertionError if destinationPath is not a string', () => {
+        it('should throw AssertionError if sourcePath is not a string', () => {
             let rules = {
                 a: {
                     converter: identity,
-                    destinationPath: 1
+                    sourcePath: 1
                 }
             };
 
