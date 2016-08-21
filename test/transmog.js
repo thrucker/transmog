@@ -88,6 +88,89 @@ describe('transmog', () => {
                 a: 2
             });
         });
+
+        describe('defaultTo property', () => {
+            it('should use defaultTo function for non-existing source path', () => {
+                let rules = {
+                    a: {
+                        converter: identity,
+                        defaultTo: () => 1,
+                        sourcePath: 'a'
+                    }
+                };
+
+                let obj = {
+                    b: 10
+                };
+
+                expect(transmog(rules, obj)).to.deep.equal({
+                    a: 1
+                });
+            });
+
+            it('should use defaultTo function if source value is undefined', () => {
+                let rules = {
+                    a: {
+                        converter: identity,
+                        defaultTo: () => 1,
+                        sourcePath: 'a'
+                    }
+                };
+
+                let obj = {
+                    a: undefined,
+                    b: 10
+                };
+
+                expect(transmog(rules, obj)).to.deep.equal({
+                    a: 1
+                });
+            });
+
+            it('should use defaultTo function if source value is null', () => {
+                let rules = {
+                    a: {
+                        converter: identity,
+                        defaultTo: () => 1,
+                        sourcePath: 'a'
+                    }
+                };
+
+                let obj = {
+                    a: null,
+                    b: 10
+                };
+
+                expect(transmog(rules, obj)).to.deep.equal({
+                    a: 1
+                });
+            });
+
+            it('should call defaultTo function with source object as argument', () => {
+                let arg;
+
+                let defaultToFunction = (o) => {
+                    arg = o;
+                    return 1;
+                };
+
+                let rules = {
+                    a: {
+                        converter: identity,
+                        defaultTo: defaultToFunction,
+                        sourcePath: 'a'
+                    }
+                };
+
+                let obj = {
+                    b: 10
+                };
+
+                transmog(rules, obj);
+
+                expect(arg).to.equal(obj);
+            });
+        });
     });
 
     context('property paths', () => {
