@@ -260,4 +260,54 @@ describe('transmog', () => {
             expect(() => transmog(rules, obj)).to.throw('AssertionError');
         });
     });
+
+    context('conversion function', () => {
+        it('should be called with source property value as first argument', () => {
+            let firstArgument;
+
+            let converterFunction = (a) => {
+                firstArgument = a;
+                return a;
+            };
+
+            let rules = {
+                a: {
+                    converter: converterFunction,
+                    sourcePath: 'a'
+                }
+            };
+
+            let obj = {
+                a: {}
+            };
+
+            transmog(rules, obj);
+
+            expect(firstArgument).to.equal(obj.a);
+        });
+
+        it('should be called with source object as second argument', () => {
+            let secondArgument;
+
+            let converterFunction = (a, o) => {
+                secondArgument = o;
+                return a;
+            };
+
+            let rules = {
+                a: {
+                    converter: converterFunction,
+                    sourcePath: 'a'
+                }
+            };
+
+            let obj = {
+                a: 1
+            };
+
+            transmog(rules, obj);
+
+            expect(secondArgument).to.equal(obj);
+        });
+    });
 });

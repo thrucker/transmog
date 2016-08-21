@@ -32,7 +32,7 @@ let filterRulesWithExistingSourcePath = curry((obj, rules) =>
 );
 
 let convertValueFromSourcePath = (converter, sourcePath, obj) =>
-    converter(get(sourcePath, obj));
+    converter(get(sourcePath, obj), obj);
 
 let applyRules = curry((obj, rules) =>
     reduce(
