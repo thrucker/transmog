@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import transmog from '../src/index';
 import identity from 'lodash/identity';
-import assert from '../src/assert';
 
 describe('transmog', () => {
     context('object rules', () => {
