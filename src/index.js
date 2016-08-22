@@ -9,7 +9,6 @@ import nthArg from 'lodash/fp/nthArg';
 import pickBy from 'lodash/fp/pickBy';
 import _reduce from 'lodash/fp/reduce';
 import set from 'lodash/fp/set';
-import tap from 'lodash/fp/tap';
 
 import canonicalizeRules from './canonicalizeRules';
 
@@ -36,7 +35,7 @@ let hasExistingValueAtPath = curry((path, obj) =>
 let isRuleWithExistingSourceValue = (obj) =>
     flow(
         get('sourcePath'),
-        hasExistingValueAtPath(_, obj)
+        has(_, obj)
     );
 
 let isRuleWithDefault = has('defaultTo');
@@ -55,7 +54,7 @@ let convertValueFromSourcePath = (converter, sourcePath, obj) =>
     converter(get(sourcePath, obj), obj);
 
 let convertValueOrUseDefault = ({converter, sourcePath, defaultTo}, obj) => {
-    if (hasExistingValueAtPath(sourcePath, obj)) {
+    if (hasExistingValueAtPath(sourcePath, obj) || !defaultTo) {
         return convertValueFromSourcePath(converter, sourcePath, obj);
     } else {
         return defaultTo(obj);

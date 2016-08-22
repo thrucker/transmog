@@ -239,6 +239,40 @@ describe('transmog', () => {
                 A: 1
             });
         });
+
+        it('should convert undefined values', () => {
+            let rules = {
+                a: {
+                    converter: identity,
+                    sourcePath: 'a'
+                }
+            };
+
+            let obj = {
+                a: undefined
+            };
+
+            expect(transmog(rules, obj)).to.deep.equal({
+                a: undefined
+            });
+        });
+
+        it('should convert null values', () => {
+            let rules = {
+                a: {
+                    converter: identity,
+                    sourcePath: 'a'
+                }
+            };
+
+            let obj = {
+                a: null
+            };
+
+            expect(transmog(rules, obj)).to.deep.equal({
+                a: null
+            });
+        });
     });
 
     context('boolean rules', () => {
