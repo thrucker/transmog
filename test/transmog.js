@@ -88,6 +88,24 @@ describe('transmog', () => {
             });
         });
 
+        it('should omit the property if source object has no value under the specified path', () => {
+            let rules = {
+                a: {
+                    converter: (a) => a + 1,
+                    sourcePath: 'b'
+                },
+                x: 'c'
+            };
+
+            let obj = {
+                c: 10
+            };
+
+            expect(transmog(rules, obj)).to.deep.equal({
+                x: 10
+            });
+        });
+
         describe('defaultTo property', () => {
             it('should use defaultTo function for non-existing source path', () => {
                 let rules = {
