@@ -25,6 +25,6 @@
     "rimraf": "^2.5.4"
   },
   "dependencies": {
-    "lodash": "^4.15.0"
+    "lodash": "^4.17.0"
   }
 }
