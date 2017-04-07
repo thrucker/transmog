@@ -1,5 +1,7 @@
 # transmog
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/thrucker/transmog.svg)](https://greenkeeper.io/)
+
 [![npm](https://img.shields.io/npm/v/transmog.svg?maxAge=2592000)](https://www.npmjs.org/package/transmog)
 [![Build Status](https://travis-ci.org/thrucker/transmog.svg?branch=master)](https://travis-ci.org/thrucker/transmog)
 [![codecov](https://codecov.io/gh/thrucker/transmog/branch/master/graph/badge.svg)](https://codecov.io/gh/thrucker/transmog)
