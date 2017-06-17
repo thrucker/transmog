@@ -376,7 +376,7 @@ describe('transmog', () => {
                 a: 1
             };
 
-            expect(() => transmog(rules, obj)).to.throw('AssertionError');
+            expect(() => transmog(rules, obj)).to.throw('converter must be a function');
         });
 
         it('should throw AssertionError if sourcePath is not a string', () => {
@@ -391,7 +391,7 @@ describe('transmog', () => {
                 a: 2
             };
 
-            expect(() => transmog(rules, obj)).to.throw('AssertionError');
+            expect(() => transmog(rules, obj)).to.throw('sourcePath must be a string');
         });
     });
 
