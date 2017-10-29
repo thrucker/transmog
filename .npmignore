@@ -1,8 +1,0 @@
-.babelrc
-.travis.yml
-.nyc_output/
-*.lcov
-coverage/
-src/
-test/
-node_modules/
