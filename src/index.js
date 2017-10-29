@@ -60,10 +60,16 @@ const applyRules = obj => rules =>
     {},
   )
 
+export function createTransformer(rules) {
+  const canonicalRules = canonicalizeRules(rules)
+  return function transformer(obj) {
+    return flow(
+      filterRulesForObject(obj),
+      applyRules(obj),
+    )(canonicalRules)
+  }
+}
+
 export default function serialize(rules, obj) {
-  return flow(
-    canonicalizeRules,
-    filterRulesForObject(obj),
-    applyRules(obj),
-  )(rules)
+  return createTransformer(rules)(obj)
 }
