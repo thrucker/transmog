@@ -1,1 +1,1 @@
-export default (value) => typeof value;
+export default value => typeof value
