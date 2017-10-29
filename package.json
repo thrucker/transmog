@@ -7,12 +7,13 @@
     "lib"
   ],
   "scripts": {
-    "build": "babel src --out-dir lib",
+    "prepublishOnly": "npm run clean && npm run ci && babel src --out-dir lib",
     "clean": "rimraf lib coverage",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "prepublish": "npm run clean && npm run build",
     "test": "nyc --reporter=lcov --reporter=text mocha",
-    "test:watch": "mocha --watch"
+    "test:watch": "mocha --watch",
+    "ci": "npm run lint && npm test",
+    "lint": "eslint src test"
   },
   "author": "thrucker",
   "license": "MIT",
