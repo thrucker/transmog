@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "prepublishOnly": "npm run clean && npm run ci && babel src --out-dir lib",
-    "clean": "rimraf lib coverage",
+    "clean": "rm -rf lib coverage",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "test": "nyc --reporter=lcov --reporter=text mocha",
     "test:watch": "mocha --watch",
@@ -28,8 +28,7 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
     "mocha": "^4.0.1",
-    "nyc": "^11.0.2",
-    "rimraf": "^2.5.4"
+    "nyc": "^11.0.2"
   },
   "dependencies": {
     "lodash": "^4.17.0"
