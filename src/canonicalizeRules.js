@@ -1,20 +1,17 @@
-import _ from 'lodash/fp/placeholder';
-import defaults from 'lodash/fp/defaults';
-import flow from 'lodash/fp/flow';
-import forEach from 'lodash/fp/forEach';
-import has from 'lodash/fp/has';
-import identity from 'lodash/fp/identity';
+import defaults from 'lodash/defaults';
+import flow from 'lodash/flow';
+import forEach from 'lodash/forEach';
+import has from 'lodash/has';
+import identity from 'lodash/identity';
 import invoke from 'lodash/invoke';
-import isNil from 'lodash/fp/isNil';
-import _mapValues from 'lodash/fp/mapValues';
-import omitBy from 'lodash/fp/omitBy';
-import pickBy from 'lodash/fp/pickBy';
-import tap from 'lodash/fp/tap';
+import isNil from 'lodash/isNil';
+import mapValues from 'lodash/mapValues';
+import omitBy from 'lodash/omitBy';
+import pickBy from 'lodash/pickBy';
+import tap from 'lodash/tap';
 
 import assert from './assert';
 import typeOf from './typeOf';
-
-let mapValues = _mapValues.convert({cap: false});
 
 let canonicalizeBoolean = (transformProperty, destinationPath) => {
     if (!transformProperty) {
@@ -37,11 +34,11 @@ let canonicalizeString = (sourcePath, destinationPath) => {
 
 let canonicalizeObject = (rule, destinationPath) =>
     defaults(
+        rule,
         {
             converter: identity,
             sourcePath: destinationPath
         },
-        rule
     )
 
 let canonicalizers = {
@@ -51,21 +48,48 @@ let canonicalizers = {
     'object': canonicalizeObject
 };
 
-let filterExistingCanonicalizers = pickBy(
-    flow(typeOf, has(_, canonicalizers))
+let hasCanonicalizer = type =>
+    has(canonicalizers, type)
+
+let hasCanonicalizerForRule = flow(
+    typeOf,
+    hasCanonicalizer,
+)
+
+let filterExistingCanonicalizers = rules => pickBy(
+    rules,
+    hasCanonicalizerForRule,
 );
 
-let applyCanonicalizers = mapValues(
-    (rule, destinationPath) => invoke(canonicalizers, typeOf(rule), rule, destinationPath)
+let getCanonicalizerForRule = flow(
+  typeOf,
+  type => canonicalizers[type],
+)
+
+let applyCanonicalizerToRule = (rule, destinationPath) =>
+    getCanonicalizerForRule(rule)(rule, destinationPath)
+
+let applyCanonicalizers = rules => mapValues(
+    rules,
+    applyCanonicalizerToRule,
 );
 
-let omitEmptyRules = omitBy(isNil);
+let omitEmptyRules = rules => omitBy(rules, isNil);
 
-let assertRuleFormat = tap(
-    forEach(({converter, sourcePath}) => {
-        assert(typeof converter === 'function', 'converter must be a function');
-        assert(typeof sourcePath === 'string', 'sourcePath must be a string');
-    })
+let assertFormatForRule = ({ converter, sourcePath }) => {
+    assert(typeof converter === 'function', 'converter must be a function');
+    assert(typeof sourcePath === 'string', 'sourcePath must be a string');
+}
+
+let assertFormatForRules = rules =>
+    forEach(
+        rules,
+        assertFormatForRule,
+    )
+
+let assertRuleFormat = (rules) => tap(
+    rules,
+    assertFormatForRules,
 );
 
 export default flow(

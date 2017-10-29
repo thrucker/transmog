@@ -1,57 +1,52 @@
-import _ from 'lodash/fp/placeholder';
-import curry from 'lodash/fp/curry';
-import flow from 'lodash/fp/flow';
-import get from 'lodash/fp/get';
-import has from 'lodash/fp/has';
-import isNil from 'lodash/fp/isNil';
-import negate from 'lodash/fp/negate';
-import nthArg from 'lodash/fp/nthArg';
-import pickBy from 'lodash/fp/pickBy';
-import _reduce from 'lodash/fp/reduce';
-import set from 'lodash/fp/set';
+import flow from 'lodash/flow';
+import get from 'lodash/get';
+import has from 'lodash/has';
+import isNil from 'lodash/isNil';
+import negate from 'lodash/negate';
+import pickBy from 'lodash/pickBy';
+import set from 'lodash/set';
+import reduce from 'lodash/reduce';
 
 import canonicalizeRules from './canonicalizeRules';
 
-let reduce = _reduce.convert({cap: false});
-
-export default curry(function serialize(rules, obj) {
+export default function serialize(rules, obj) {
     return flow(
         canonicalizeRules,
         filterRulesForObject(obj),
         applyRules(obj)
     )(rules);
-});
+};
 
 let or = (a, b) =>
-    (x) => a(x) || b(x)
+    x => a(x) || b(x)
 
-let hasExistingValueAtPath = curry((path, obj) =>
+let isNotNil = negate(isNil)
+
+let hasExistingValueAtPath = (path, obj) =>
     flow(
-        get(path),
-        negate(isNil)
-    )(obj)
-);
+        x => get(x, path),
+        isNotNil,
+    )(obj);
 
 let isRuleWithExistingSourceValue = (obj) =>
     flow(
-        get('sourcePath'),
-        has(_, obj)
+        rule => rule.sourcePath,
+        path => has(obj, path),
     );
 
-let isRuleWithDefault = has('defaultTo');
+let isRuleWithDefault = rule => has(rule, 'defaultTo');
 
-let filterRulesForObject = curry((obj, rules) =>
+let filterRulesForObject = obj => rules =>
     pickBy(
+        rules,
         or(
             isRuleWithExistingSourceValue(obj),
             isRuleWithDefault
         ),
-        rules
-    )
-);
+    );
 
 let convertValueFromSourcePath = (converter, sourcePath, obj) =>
-    converter(get(sourcePath, obj), obj);
+    converter(get(obj, sourcePath), obj);
 
 let convertValueOrUseDefault = ({converter, sourcePath, defaultTo}, obj) => {
     if (hasExistingValueAtPath(sourcePath, obj) || !defaultTo) {
@@ -61,16 +56,15 @@ let convertValueOrUseDefault = ({converter, sourcePath, defaultTo}, obj) => {
     }
 };
 
-let applyRules = curry((obj, rules) =>
+let applyRules = obj => rules =>
     reduce(
+        rules,
         (acc, rule, destinationPath) =>
             set(
+                acc,
                 destinationPath,
                 convertValueOrUseDefault(rule, obj),
-                acc
             )
         ,
         {},
-        rules
-    )
-);
+    );
