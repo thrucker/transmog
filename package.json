@@ -2,6 +2,10 @@
   "name": "transmog",
   "version": "2.2.0",
   "description": "Simple rule-based object transformer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thrucker/transmog.git"
+  },
   "main": "lib/index.js",
   "files": [
     "lib"
